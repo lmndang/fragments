@@ -5,7 +5,8 @@
   "description": "Lab 1 Cloud Computing for Programmers CCP555NSB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --config .eslintrc.js src/**"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
     "node": ">=15.0.0"
   },
   "devDependencies": {
+    "eslint": "^8.15.0",
     "prettier": "2.6.2"
   }
 }
