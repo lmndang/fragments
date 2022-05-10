@@ -18,9 +18,11 @@
     "url": "https://github.com/lmndang/fragments/issues"
   },
   "homepage": "https://github.com/lmndang/fragments#readme",
-
-  "engines" : { 
-    "npm" : ">=7.0.0",
-    "node" : ">=15.0.0"
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=15.0.0"
+  },
+  "devDependencies": {
+    "prettier": "2.6.2"
   }
 }
