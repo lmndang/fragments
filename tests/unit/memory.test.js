@@ -5,7 +5,7 @@ const {
   readFragmentData,
   listFragments,
   deleteFragment,
-} = require('../../src/data/index');
+} = require('../../src/model/data/memory/index');
 
 describe('fragments memory test', () => {
   test("Write fragment's metadata, return nothing", async () => {
