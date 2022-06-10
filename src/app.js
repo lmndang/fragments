@@ -14,7 +14,7 @@ const logger = require('./logger');
 const authorization = require('./authorization');
 
 //Refactor to Use the response.js Functions
-const { createSuccessResponse } = require('./response');
+const { createErrorResponse } = require('./response');
 
 const pino = require('pino-http')({
   // Use our default logger instance, which is already configured
@@ -62,7 +62,7 @@ app.use('/', require('./routes'));
 
 // Add 404 middleware to handle any requests for resources that can't be found
 app.use((req, res) => {
-  res.status(404).json(createSuccessResponse(404, 'not found'));
+  res.status(404).json(createErrorResponse(404, 'not found'));
 });
 
 // Add error-handling middleware to deal with anything else
@@ -78,7 +78,7 @@ app.use((err, req, res, next) => {
     logger.error({ err }, `Error processing request`);
   }
 
-  res.status(status).json(createSuccessResponse(status, message));
+  res.status(status).json(createErrorResponse(status, message));
 });
 
 // Export our `app` so we can access it in server.js
