@@ -1,5 +1,7 @@
 // src/routes/index.js
 
+//const { nanoid } = require('nanoid');
+
 const express = require('express');
 
 // version and author from package.json
@@ -32,8 +34,27 @@ router.get('/', (req, res) => {
     createSuccessResponse({
       author,
       // Use your own GitHub URL for this...
-      githubUrl: 'https://github.com/humphd/fragments',
+      githubUrl: 'https://github.com/lmndang/fragments',
       version,
+    })
+  );
+});
+
+router.post('/', (req, res) => {
+  console.log(req.body);
+
+  //const idGenerated = nanoid();
+
+  res.status(201).json(
+    createSuccessResponse({
+      fragment: {
+        id: 'V1StGXR8_Z5jdHi6B-myT',
+        ownerId: '0925f997',
+        created: '2021-11-02T15:09:50.403Z',
+        updated: '2021-11-02T15:09:50.403Z',
+        type: 'text/plain',
+        size: 256,
+      },
     })
   );
 });
