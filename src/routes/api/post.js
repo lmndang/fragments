@@ -4,7 +4,7 @@ const { createSuccessResponse, createErrorResponse } = require('../../response')
 module.exports = async (req, res) => {
   if (!req.is('text/plain')) {
     res.status(415).json(createErrorResponse(415, 'Content type not supported'));
-    res.redirect('/');
+    return;
   }
 
   const fragment = new Fragment({ ownerId: req.user, type: 'text/plain', size: 0 });
