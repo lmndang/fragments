@@ -1,7 +1,4 @@
 // src/routes/index.js
-
-//const { nanoid } = require('nanoid');
-
 const express = require('express');
 
 // version and author from package.json
@@ -40,23 +37,23 @@ router.get('/', (req, res) => {
   );
 });
 
-router.post('/', (req, res) => {
-  console.log(req.body);
+// router.post('/', (req, res) => {
+//   console.log(req.body);
 
-  //const idGenerated = nanoid();
+//   //const idGenerated = nanoid();
 
-  res.status(201).json(
-    createSuccessResponse({
-      fragment: {
-        id: 'V1StGXR8_Z5jdHi6B-myT',
-        ownerId: '0925f997',
-        created: '2021-11-02T15:09:50.403Z',
-        updated: '2021-11-02T15:09:50.403Z',
-        type: 'text/plain',
-        size: 256,
-      },
-    })
-  );
-});
+//   res.status(201).json(
+//     createSuccessResponse({
+//       fragment: {
+//         id: 'V1StGXR8_Z5jdHi6B-myT',
+//         ownerId: '0925f997',
+//         created: '2021-11-02T15:09:50.403Z',
+//         updated: '2021-11-02T15:09:50.403Z',
+//         type: 'text/plain',
+//         size: 256,
+//       },
+//     })
+//   );
+// });
 
 module.exports = router;
