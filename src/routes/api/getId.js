@@ -35,18 +35,22 @@ module.exports = async (req, res) => {
 
   //Return if Id is valid
   if (isIDValid) {
-    const fragment = await Fragment.byId(req.user, idConverted);
-    const text = await fragment.getData();
+    try {
+      const fragment = await Fragment.byId(req.user, idConverted);
+      const text = await fragment.getData();
 
-    //Return text file if no extensions define
-    if (!isHtmlExtension) {
-      res.setHeader('Content-type', 'text/plain');
-      res.setHeader('Content-disposition', 'attachment; filename=fragment.txt');
-      res.send(text);
-    }
-    //Return html if extension define
-    else {
-      res.send('<h1>' + text + '</h1>');
+      //Return text file if no extensions define
+      if (!isHtmlExtension) {
+        res.setHeader('Content-type', 'text/plain');
+        res.setHeader('Content-disposition', 'attachment; filename=fragment.txt');
+        res.send(text);
+      }
+      //Return html if extension define
+      else {
+        res.send('<h1>' + text + '</h1>');
+      }
+    } catch (error) {
+      throw new Error('Cannot get data from invalid Id');
     }
   } else {
     res.status(404).json(createErrorResponse(404, 'The fragment ID ' + idConverted + ' not found'));

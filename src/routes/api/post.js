@@ -8,8 +8,13 @@ module.exports = async (req, res) => {
   }
 
   const fragment = new Fragment({ ownerId: req.user, type: 'text/plain', size: 0 });
-  await fragment.save();
-  await fragment.setData(req.body);
+
+  try {
+    await fragment.save();
+    await fragment.setData(req.body);
+  } catch (error) {
+    throw new Error('Data invalid, cannot create new fragment');
+  }
 
   res.set('Location', `${process.env.API_URL}/v1/fragments/${fragment.id}`);
 
