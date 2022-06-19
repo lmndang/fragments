@@ -16,7 +16,9 @@ module.exports = async (req, res) => {
     throw new Error('Data invalid, cannot create new fragment');
   }
 
-  res.set('Location', `${process.env.API_URL}/v1/fragments/${fragment.id}`);
+  var currentURL = req.protocol + '://' + req.get('host');
+
+  res.set('Location', `${currentURL}/v1/fragments/${fragment.id}`);
 
   res.status(201).json(
     createSuccessResponse({

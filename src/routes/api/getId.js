@@ -2,16 +2,19 @@ const { createErrorResponse } = require('../../response');
 
 const { Fragment } = require('../../model/fragment');
 
+const path = require('path');
+
 module.exports = async (req, res) => {
   const fragmentList = await Fragment.byUser(req.user);
-  let isIDValid = false;
-  let idConverted = req.params.id;
-  let isHtmlExtension = false;
+  const pathObj = path.parse(req.params.id);
 
-  //Check if id contain extension
-  if (idConverted.includes('.')) {
-    //Check if id contain supported extension
-    if (idConverted.includes('.html')) {
+  let isHtmlExtension = false;
+  let isIDValid = false;
+
+  //Check if the id contain extension
+  if (pathObj.ext) {
+    //Double check if id contain supported extension
+    if (pathObj.ext === '.html') {
       isHtmlExtension = true;
     }
     //Return 415 Error if not supported extension
@@ -21,22 +24,16 @@ module.exports = async (req, res) => {
     }
   }
 
-  //Get id
-  if (isHtmlExtension) {
-    idConverted = req.params.id.replace('.html', '');
-  }
-
   //Check if ID is exist
   fragmentList.forEach((id) => {
-    if (idConverted === id) {
+    if (pathObj.name === id) {
       isIDValid = true;
     }
   });
 
-  //Return if Id is valid
   if (isIDValid) {
     try {
-      const fragment = await Fragment.byId(req.user, idConverted);
+      const fragment = await Fragment.byId(req.user, pathObj.name);
       const text = await fragment.getData();
 
       //Return text file if no extensions define
@@ -53,6 +50,8 @@ module.exports = async (req, res) => {
       throw new Error('Cannot get data from invalid Id');
     }
   } else {
-    res.status(404).json(createErrorResponse(404, 'The fragment ID ' + idConverted + ' not found'));
+    res
+      .status(404)
+      .json(createErrorResponse(404, 'The fragment ID ' + pathObj.name + ' not found'));
   }
 };
