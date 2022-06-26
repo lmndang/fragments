@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
   const pathObj = path.parse(req.params.id);
 
   let isHtmlExtension = false;
+  let isMarkdownExtension = false;
   let isIDValid = false;
 
   //Check if the id contain extension
@@ -16,6 +17,8 @@ module.exports = async (req, res) => {
     //Double check if id contain supported extension
     if (pathObj.ext === '.html') {
       isHtmlExtension = true;
+    } else if (pathObj.ext === '.md') {
+      isMarkdownExtension = true;
     }
     //Return 415 Error if not supported extension
     else {
@@ -36,15 +39,23 @@ module.exports = async (req, res) => {
       const fragment = await Fragment.byId(req.user, pathObj.name);
       const text = await fragment.getData();
 
+      //Return html if extension define
+      if (isHtmlExtension) {
+        res.send('<h1>' + text + '</h1>');
+      }
+
+      //Return markdown if .md extension define
+      if (isMarkdownExtension) {
+        //var md = require('markdown-it')();
+        //var result = md.render(text);
+        res.send('Support the markdown extension');
+      }
+
       //Return text file if no extensions define
-      if (!isHtmlExtension) {
+      if (!isHtmlExtension && !isMarkdownExtension) {
         res.setHeader('Content-type', 'text/plain');
         res.setHeader('Content-disposition', 'attachment; filename=fragment.txt');
         res.send(text);
-      }
-      //Return html if extension define
-      else {
-        res.send('<h1>' + text + '</h1>');
       }
     } catch (error) {
       throw new Error('Cannot get data from invalid Id');
