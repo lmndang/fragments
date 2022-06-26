@@ -46,9 +46,10 @@ module.exports = async (req, res) => {
 
       //Return markdown if .md extension define
       if (isMarkdownExtension) {
-        //var md = require('markdown-it')();
-        //var result = md.render(text);
-        res.send('Support the markdown extension');
+        var md = require('markdown-it')();
+        var result = md.render(text.toString());
+
+        res.send(result);
       }
 
       //Return text file if no extensions define
