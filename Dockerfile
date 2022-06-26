@@ -6,7 +6,7 @@
 
 # Specifies the base image to use
 # Use node version 16.15.0
-FROM node:16.15.0 AS dependencies
+FROM node:16.15.0@sha256:59eb4e9d6a344ae1161e7d6d8af831cb50713cc631889a5a8c2d438d6ec6aa0f AS dependencies
 
 # Define metadata
 LABEL maintainer="Le Minh Nhat Dang <lmndang@myseneca.ca>"
@@ -36,7 +36,7 @@ RUN npm install
 ############################################################################################
 
 #STAGE 2: Use dependencies to build fragments
-FROM node:16.15.0 AS builder
+FROM node:16.15.0@sha256:59eb4e9d6a344ae1161e7d6d8af831cb50713cc631889a5a8c2d438d6ec6aa0f AS builder
 
 # Use /app as our working directory (same as Stage 1)
 WORKDIR /app
