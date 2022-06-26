@@ -1,8 +1,12 @@
 # Create instructions used by the Docker Engine to create a Docker Image
 
+############################################################################################
+
+#STAGE 1: Install all dependencies in package.json
+
 # Specifies the base image to use
 # Use node version 16.15.0
-FROM node:16.15.0
+FROM node:16.15.0 AS dependencies
 
 # Define metadata
 LABEL maintainer="Le Minh Nhat Dang <lmndang@myseneca.ca>"
@@ -28,6 +32,17 @@ COPY package.json package-lock.json ./
 
 # Install node dependencies defined in package-lock.json
 RUN npm install
+
+############################################################################################
+
+#STAGE 2: Use dependencies to build fragments
+FROM node:16.15.0 AS builder
+
+# Use /app as our working directory (same as Stage 1)
+WORKDIR /app
+
+#Copy node_modules, package.json, and package-lock.json from stage 1 to the /app folder
+COPY --from=dependencies /app /app
 
 # Copy src to /app/src/
 COPY ./src ./src
