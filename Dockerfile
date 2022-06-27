@@ -31,7 +31,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install node dependencies defined in package-lock.json
-RUN npm install
+RUN npm ci
 
 ############################################################################################
 
@@ -51,7 +51,7 @@ COPY ./src ./src
 COPY ./tests/.htpasswd ./tests/.htpasswd
 
 # Start the container by running our server
-CMD npm start
+CMD node src/index.js
 
 # We run our service on port 8080
 EXPOSE 8080
