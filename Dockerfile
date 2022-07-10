@@ -51,7 +51,7 @@ COPY ./src ./src
 COPY ./tests/.htpasswd ./tests/.htpasswd
 
 # Start the container by running our server
-CMD node src/index.js
+CMD ["node", "src/index.js"]
 
 # We run our service on port 8080
 EXPOSE 8080
