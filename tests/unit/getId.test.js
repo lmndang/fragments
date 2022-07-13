@@ -62,4 +62,23 @@ describe('GET /v1/fragments/:Id', () => {
       .auth('user1@email.com', 'password1');
     expect(res2.statusCode).toBe(200);
   });
+
+  test('Authenticated request, supported file, fragment data found, return json', async () => {
+    const data = {
+      hello: 'Hi',
+      name: 'Ethan',
+      age: 22,
+    };
+
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'application/json')
+      .send(JSON.stringify(data));
+
+    const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}`)
+      .auth('user1@email.com', 'password1');
+    expect(res2.statusCode).toBe(200);
+  });
 });

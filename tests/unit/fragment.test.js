@@ -5,6 +5,7 @@ const wait = async (ms = 10) => new Promise((resolve) => setTimeout(resolve, ms)
 
 const validTypes = [
   `text/plain`,
+  `application/json`,
   /*
    Currently, only text/plain is supported. Others will be added later.
 
@@ -39,6 +40,11 @@ describe('Fragment class', () => {
     test('type can be a simple media type', () => {
       const fragment = new Fragment({ ownerId: '1234', type: 'text/plain', size: 0 });
       expect(fragment.type).toEqual('text/plain');
+    });
+
+    test('type can be a JSON format', () => {
+      const fragment = new Fragment({ ownerId: '1234', type: 'application/json', size: 0 });
+      expect(fragment.type).toEqual('application/json');
     });
 
     test('type can include a charset', () => {

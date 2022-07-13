@@ -48,7 +48,11 @@ class Fragment {
       throw new Error('Size must be a number and positive');
     }
 
-    if (type !== 'text/plain' && type !== 'text/plain; charset=utf-8') {
+    if (
+      type !== 'text/plain' &&
+      type !== 'text/plain; charset=utf-8' &&
+      type !== 'application/json'
+    ) {
       throw new Error('Invalid content-type');
     }
 
@@ -174,7 +178,11 @@ class Fragment {
    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
    */
   static isSupportedType(value) {
-    if (value === 'text/plain' || value === 'text/plain; charset=utf-8') {
+    if (
+      value === 'text/plain' ||
+      value === 'text/plain; charset=utf-8' ||
+      value === 'application/json'
+    ) {
       return true;
     } else {
       return false;

@@ -39,6 +39,12 @@ module.exports = async (req, res) => {
       const fragment = await Fragment.byId(req.user, pathObj.name);
       const text = await fragment.getData();
 
+      //Return json if type is "application/json"
+      if (fragment.type === 'application/json') {
+        res.json(JSON.parse(text.toString()));
+        return;
+      }
+
       //Return html if extension define
       if (isHtmlExtension) {
         res.send('<h1>' + text + '</h1>');
