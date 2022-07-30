@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     await fragment.save();
     await fragment.setData(Buffer.from(req.body));
   } catch (error) {
-    throw new Error('Data invalid, cannot create new fragment');
+    throw new Error(error);
   }
 
   //Add location of the saved data in location header
