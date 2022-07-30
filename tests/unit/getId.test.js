@@ -81,4 +81,19 @@ describe('GET /v1/fragments/:Id', () => {
       .auth('user1@email.com', 'password1');
     expect(res2.statusCode).toBe(200);
   });
+
+  test('Authenticated request, supported file, fragment data found, return image', async () => {
+    const filePath = '../integration/amazon.png';
+
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'image/png')
+      .send(filePath);
+
+    const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}`)
+      .auth('user1@email.com', 'password1');
+    expect(res2.statusCode).toBe(200);
+  });
 });

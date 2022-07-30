@@ -45,6 +45,12 @@ module.exports = async (req, res) => {
         return;
       }
 
+      if (fragment.type === 'image/png') {
+        const b64 = text.toString('base64');
+        res.send(`<img src="data:${fragment.type};base64,${b64}" />`);
+        return;
+      }
+
       //Return html if extension define
       if (isHtmlExtension) {
         res.send('<h1>' + text + '</h1>');

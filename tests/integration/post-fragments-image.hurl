@@ -1,15 +1,15 @@
-# tests/integration/post-fragments-charset.hurl
+# tests/integration/post-fragments-image.hurl
 # Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments
 
 # user1@email.com:password1
 Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
-# We're sending a text/plain; charset=utf-8 type fragment
-Content-Type: text/plain; charset=utf-8
+# We're sending a image type fragment
+Content-Type: image/png
 
-# Send a text in the body
-```This is a fragment with charset!```
+# Send a image in the body
+file,amazon.png;
 
 # We expect to get back an HTTP 201
 HTTP/1.1 201
@@ -23,7 +23,4 @@ GET {{url}}
 Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
 HTTP/1.1 200
-Content-Type: text/plain
-Content-Length: 32
-[Asserts]
-body == "This is a fragment with charset!"
+Content-Type: text/html; charset=utf-8
