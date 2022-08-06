@@ -27,7 +27,17 @@ module.exports = async (req, res) => {
           .status(400)
           .json(createErrorResponse(400, 'Cannot change the type of fragment ID: ' + idParams));
       } else {
-        await fragment.setData(Buffer.from(req.body));
+        //Because using the DynamoDB, the getDat function get lost
+        //Recreate Javascript Object to get data
+        const fragmentObj = new Fragment({
+          id: fragment.id,
+          ownerId: fragment.ownerId,
+          created: fragment.created,
+          updated: fragment.updated,
+          type: fragment.type,
+          size: fragment.size,
+        });
+        await fragmentObj.setData(Buffer.from(req.body));
 
         res.status(200).json(createSuccessResponse({ fragment }));
       }
