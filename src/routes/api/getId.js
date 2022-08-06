@@ -46,8 +46,8 @@ module.exports = async (req, res) => {
       }
 
       if (fragment.type === 'image/png') {
-        const b64 = text.toString('base64');
-        res.send(`<img src="data:${fragment.type};base64,${b64}" />`);
+        //const b64 = text.toString();
+        res.send(`data:${fragment.type};base64,${text}`);
         return;
       }
 
