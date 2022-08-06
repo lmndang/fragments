@@ -71,7 +71,7 @@ module.exports = async (req, res) => {
         res.send(text);
       }
     } catch (error) {
-      throw new Error('Cannot get data from invalid Id');
+      throw new Error(error);
     }
   } else {
     res
