@@ -1,7 +1,7 @@
 {
   "name": "fragments",
   "private": true,
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Lab 1 Cloud Computing for Programmers CCP555NSB",
   "main": "index.js",
   "scripts": {
