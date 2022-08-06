@@ -37,7 +37,19 @@ module.exports = async (req, res) => {
   if (isIDValid) {
     try {
       const fragment = await Fragment.byId(req.user, pathObj.name);
-      const text = await fragment.getData();
+
+      //Because using the DynamoDB, the getDat function get lost
+      //Recreate Javascript Object to get data
+      const fragmentObj = new Fragment({
+        id: fragment.id,
+        ownerId: fragment.ownerId,
+        created: fragment.created,
+        updated: fragment.updated,
+        type: fragment.type,
+        size: fragment.size,
+      });
+
+      const text = await fragmentObj.getData();
 
       //Return json if type is "application/json"
       if (fragment.type === 'application/json') {

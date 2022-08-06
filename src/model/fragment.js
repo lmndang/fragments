@@ -118,9 +118,9 @@ class Fragment {
    * Gets the fragment's data from the database
    * @returns Promise<Buffer>
    */
-  async getData() {
+  getData() {
     // TODO
-    return await readFragmentData(this.ownerId, this.id);
+    return readFragmentData(this.ownerId, this.id);
   }
 
   /**
