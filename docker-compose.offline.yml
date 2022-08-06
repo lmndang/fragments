@@ -16,10 +16,9 @@ services:
       - HTPASSWD_FILE=tests/.htpasswd
       # Use the LOG_LEVEL set in the host environment, or default to info
       - LOG_LEVEL=${LOG_LEVEL:-debug}
-      # - AWS_REGION=us-east-1
-      # - AWS_ACCESS_KEY_ID=test
-      # - AWS_SECRET_ACCESS_KEY=test
-      # - AWS_SESSION_TOKEN=test
+      # - AWS_ACCESS_KEY_ID=ASIAQL2Z4PM7P23PL33H
+      # - AWS_SECRET_ACCESS_KEY=FOaBxk4nxjo1gPuRaO8XT8d2HI9s+TPuRvwBY330
+      # - AWS_SESSION_TOKEN =FwoGZXIvYXdzEN///////////wEaDLH7y2BnIogNVqXCNiLDATxQBNLwDxggCSqKK6qwpKRL0ndaqEIJ0tEO2tt/p3NJN8AE1SunN8Yi1BwLB2s3H+N6LkEmvsRttXwDYnh7VLYQAzu2NvP6U2s8YICf5JikXaMTtFhnErT85dpoERKH8g3chK+qAh7KiCqRPSU/Xfku0cE1r8MeYjUXQdwPm/n3Mu7bZjfasmYszA2fWfPXy2RBdfbgX2/xdr/9L5ZX0raYcot3SkpQjxxvKVhTkikQq8Bk+H30Fs0jkmPOokfjewk4kiiCkJOXBjItwdnj0VAOJBz+VNZXmtANLStPB2Ait0OoDFukVjvKeZIXM6Kgj7K9QLtzcVHZ
       # Use the LocalStack endpoint vs. AWS for S3 AWS SDK clients.
       # NOTE: we use Docker's internal network to the localstack container
       - AWS_S3_ENDPOINT_URL=http://localstack:4566
