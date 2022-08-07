@@ -6,7 +6,7 @@ POST http://localhost:8080/v1/fragments
 Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 
 # We're sending a unsupported type fragment
-Content-Type: text/html
+Content-Type: application/xml
 
 # Body of the request goes in ```...``` when it's a string
 ```Nothing to send```
