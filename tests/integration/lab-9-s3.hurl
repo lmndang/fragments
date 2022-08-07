@@ -22,7 +22,7 @@ Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 #    The type of the fragment is text/plain
 #    The body is equal to Hello S3!
 HTTP/1.1 200
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
 [Asserts]
 body == "Hello S3!"
 

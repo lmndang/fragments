@@ -58,6 +58,7 @@ module.exports = async (req, res) => {
 
         if (pathObj.ext) {
           if (pathObj.ext === '.txt') {
+            res.setHeader('Content-Type', 'text/plain');
             res.send(text);
             return;
           } else {
@@ -66,6 +67,7 @@ module.exports = async (req, res) => {
           }
         }
 
+        res.setHeader('Content-Type', 'text/plain');
         res.send(text);
         return;
       }
