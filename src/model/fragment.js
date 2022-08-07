@@ -52,6 +52,7 @@ class Fragment {
       type !== 'text/plain' &&
       type !== 'text/plain; charset=utf-8' &&
       type !== 'text/markdown' &&
+      type !== 'text/html' &&
       type !== 'application/json' &&
       type !== 'image/png'
     ) {
@@ -184,6 +185,7 @@ class Fragment {
       value === 'text/plain' ||
       value === 'text/plain; charset=utf-8' ||
       value === 'text/markdown' ||
+      value === 'text/html' ||
       value === 'application/json' ||
       value === 'image/png'
     ) {

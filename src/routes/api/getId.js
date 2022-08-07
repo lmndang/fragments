@@ -9,24 +9,7 @@ module.exports = async (req, res) => {
   const fragmentList = await Fragment.byUser(req.user);
   const pathObj = path.parse(req.params.id);
 
-  //let isHtmlExtension = false;
-  //let isMarkdownExtension = false;
   let isIDValid = false;
-
-  //Check if the id contain extension
-  // if (pathObj.ext) {
-  //   //Double check if id contain supported extension
-  //   if (pathObj.ext === '.html') {
-  //     isHtmlExtension = true;
-  //   } else if (pathObj.ext === '.md') {
-  //     isMarkdownExtension = true;
-  //   }
-  //   //Return 415 Error if not supported extension
-  //   else {
-  //     res.status(415).json(createErrorResponse(415, 'Extension not supported'));
-  //     return;
-  //   }
-  // }
 
   //Check if ID is exist
   fragmentList.forEach((id) => {
@@ -95,36 +78,51 @@ module.exports = async (req, res) => {
         return;
       }
 
-      //Return json if type is "application/json"
+      //text/html support .html, .txt extension
+      if (fragment.type === 'text/html') {
+        if (pathObj.ext) {
+          if (pathObj.ext === '.html') {
+            res.send(data);
+            return;
+          } else if (pathObj.ext === '.txt') {
+            res.setHeader('Content-Type', 'text/plain');
+            res.send(data.toString());
+            return;
+          } else {
+            res.status(415).json(createErrorResponse(415, 'Extension not supported'));
+            return;
+          }
+        }
+
+        res.send(data);
+        return;
+      }
+
+      //application/json support .json, .txt extension
       if (fragment.type === 'application/json') {
+        if (pathObj.ext) {
+          if (pathObj.ext === '.json') {
+            res.json(JSON.parse(data.toString()));
+            return;
+          } else if (pathObj.ext === '.txt') {
+            res.send(data.toString());
+            return;
+          } else {
+            res.status(415).json(createErrorResponse(415, 'Extension not supported'));
+            return;
+          }
+        }
+
         res.json(JSON.parse(data.toString()));
         return;
       }
 
+      //IMAGE
       if (fragment.type === 'image/png') {
         //const b64 = text.toString();
         res.send(`data:${fragment.type};base64,${data}`);
         return;
       }
-
-      //Return html if extension define
-      // if (isHtmlExtension) {
-      //   res.send('<h1>' + text + '</h1>');
-      // }
-
-      //Return markdown if .md extension define
-      // if (isMarkdownExtension) {
-      //   var result = md.render(text.toString());
-
-      //   res.send(result);
-      // }
-
-      //Return text file if no extensions define
-      // if (!isHtmlExtension && !isMarkdownExtension) {
-      //   res.setHeader('Content-type', 'text/plain');
-      //   res.setHeader('Content-disposition', 'attachment; filename=fragment.txt');
-      //   res.send(text);
-      // }
     } catch (error) {
       throw new Error(error);
     }

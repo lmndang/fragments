@@ -18,110 +18,105 @@ describe('GET /v1/fragments/:Id', () => {
   });
 
   //TEXT
-  test('Authenticated request, text type, fragment data found, no extension', async () => {
+  test('Authenticated request, text type, fragment data found', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-type', 'text/plain')
       .send('Hello-World');
 
+    //No extension
     const res2 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}`)
       .auth('user1@email.com', 'password1');
-    expect(res2.text).toBe('Hello-World');
-  });
 
-  test('Authenticated request, text type, .txt extension', async () => {
-    const res = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-type', 'text/plain')
-      .send('Hello-World');
-
-    const res2 = await request(app)
+    //Text extension
+    const res3 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}.txt`)
       .auth('user1@email.com', 'password1');
-    expect(res2.text).toBe('Hello-World');
-  });
 
-  test('Authenticated request, text type, not supported file', async () => {
-    const res = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-type', 'text/plain')
-      .send('Hello-World');
-
-    const res2 = await request(app)
+    //No supported extension
+    const res4 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}.json`)
       .auth('user1@email.com', 'password1');
 
-    expect(res2.statusCode).toBe(415);
+    expect(res2.text).toBe('Hello-World');
+    expect(res3.text).toBe('Hello-World');
+    expect(res4.statusCode).toBe(415);
   });
 
   //MARKDOWN
-  test('Authenticated request, markdown type, fragment data found, no extension', async () => {
+  test('Authenticated request, markdown type, fragment data found', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
       .set('Content-type', 'text/markdown')
       .send('# Hello-World');
 
+    //No extension
     const res2 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}`)
       .auth('user1@email.com', 'password1');
-    expect(res2.statusCode).toBe(200);
-  });
 
-  test('Authenticated request, markdown type, fragment data found, return markdown', async () => {
-    const res = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-type', 'text/markdown')
-      .send('# Hello-World');
-
-    const res2 = await request(app)
+    //Markdown extension
+    const res3 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}.md`)
       .auth('user1@email.com', 'password1');
-    expect(res2.statusCode).toBe(200);
-  });
 
-  test('Authenticated request, markdown type, fragment data found, return html', async () => {
-    const res = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-type', 'text/markdown')
-      .send('# Hello-World');
-
-    const res2 = await request(app)
+    //Html extension
+    const res4 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}.html`)
       .auth('user1@email.com', 'password1');
-    expect(res2.statusCode).toBe(200);
-  });
 
-  test('Authenticated request, markdown type, fragment data found, return txt', async () => {
-    const res = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-type', 'text/markdown')
-      .send('# Hello-World');
-
-    const res2 = await request(app)
+    //Text extension
+    const res5 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}.txt`)
       .auth('user1@email.com', 'password1');
+
+    //No supported extension
+    const res6 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.png`)
+      .auth('user1@email.com', 'password1');
+
     expect(res2.statusCode).toBe(200);
+    expect(res3.statusCode).toBe(200);
+    expect(res4.statusCode).toBe(200);
+    expect(res5.statusCode).toBe(200);
+    expect(res6.statusCode).toBe(415);
   });
 
-  test('Authenticated request, markdown type, fragment data found, not supported type', async () => {
+  //TEXT/HTML
+  test('Authenticated request, html type, fragment data found', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
-      .set('Content-type', 'text/markdown')
-      .send('# Hello-World');
+      .set('Content-type', 'text/html')
+      .send('<h1>Hello-World</h1>');
 
+    //No extension
     const res2 = await request(app)
-      .get(`/v1/fragments/${res.body.fragment.id}.png`)
+      .get(`/v1/fragments/${res.body.fragment.id}`)
       .auth('user1@email.com', 'password1');
-    expect(res2.statusCode).toBe(415);
+
+    //html extension
+    const res3 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.html`)
+      .auth('user1@email.com', 'password1');
+
+    //txt extension
+    const res4 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+
+    //No supported extension
+    const res5 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.md`)
+      .auth('user1@email.com', 'password1');
+
+    expect(res2.statusCode).toBe(200);
+    expect(res3.statusCode).toBe(200);
+    expect(res4.statusCode).toBe(200);
+    expect(res5.statusCode).toBe(415);
   });
 
   //JSON
@@ -138,10 +133,30 @@ describe('GET /v1/fragments/:Id', () => {
       .set('Content-type', 'application/json')
       .send(JSON.stringify(data));
 
+    //No extension
     const res2 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}`)
       .auth('user1@email.com', 'password1');
+
+    //.json extension
+    const res3 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.json`)
+      .auth('user1@email.com', 'password1');
+
+    //.txt extension
+    const res4 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+
+    //Unsupported extension
+    const res5 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.png`)
+      .auth('user1@email.com', 'password1');
+
     expect(res2.statusCode).toBe(200);
+    expect(res3.statusCode).toBe(200);
+    expect(res4.statusCode).toBe(200);
+    expect(res5.statusCode).toBe(415);
   });
 
   //IMAGE

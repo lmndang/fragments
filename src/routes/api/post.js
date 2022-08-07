@@ -7,6 +7,7 @@ module.exports = async (req, res) => {
     !req.is('text/plain') &&
     !req.is('text/plain; charset=utf-8') &&
     !req.is('text/markdown') &&
+    !req.is('text/html') &&
     !req.is('application/json') &&
     !req.is('image/png')
   ) {
