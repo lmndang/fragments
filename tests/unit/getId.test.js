@@ -10,34 +10,15 @@ describe('GET /v1/fragments/:Id', () => {
   test('Unauthenticated requests are denied', () =>
     request(app).get(`/v1/fragments/randomID`).expect(401));
 
-  test('Authenticated request, not supported file', async () => {
-    const res = await request(app)
-      .get('/v1/fragments/randomID.json')
-      .auth('user1@email.com', 'password1');
-    expect(res.statusCode).toBe(415);
-  });
-
-  test('Authenticated request, supported file, no fragments found', async () => {
+  test('Authenticated request, no fragments found', async () => {
     const res = await request(app)
       .get('/v1/fragments/randomID')
       .auth('user1@email.com', 'password1');
     expect(res.statusCode).toBe(404);
   });
 
-  test('Authenticated request, supported file, fragment data found, return html', async () => {
-    const res = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-type', 'text/plain')
-      .send('Hello-World');
-
-    const res2 = await request(app)
-      .get(`/v1/fragments/${res.body.fragment.id}.html`)
-      .auth('user1@email.com', 'password1');
-    expect(res2.text).toBe('<h1>Hello-World</h1>');
-  });
-
-  test('Authenticated request, supported file, fragment data found, return text', async () => {
+  //TEXT
+  test('Authenticated request, text type, fragment data found, no extension', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
@@ -50,7 +31,7 @@ describe('GET /v1/fragments/:Id', () => {
     expect(res2.text).toBe('Hello-World');
   });
 
-  test('Authenticated request, supported file, fragment data found, return markdown', async () => {
+  test('Authenticated request, text type, .txt extension', async () => {
     const res = await request(app)
       .post('/v1/fragments')
       .auth('user1@email.com', 'password1')
@@ -58,11 +39,92 @@ describe('GET /v1/fragments/:Id', () => {
       .send('Hello-World');
 
     const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(res2.text).toBe('Hello-World');
+  });
+
+  test('Authenticated request, text type, not supported file', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/plain')
+      .send('Hello-World');
+
+    const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.json`)
+      .auth('user1@email.com', 'password1');
+
+    expect(res2.statusCode).toBe(415);
+  });
+
+  //MARKDOWN
+  test('Authenticated request, markdown type, fragment data found, no extension', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/markdown')
+      .send('# Hello-World');
+
+    const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}`)
+      .auth('user1@email.com', 'password1');
+    expect(res2.statusCode).toBe(200);
+  });
+
+  test('Authenticated request, markdown type, fragment data found, return markdown', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/markdown')
+      .send('# Hello-World');
+
+    const res2 = await request(app)
       .get(`/v1/fragments/${res.body.fragment.id}.md`)
       .auth('user1@email.com', 'password1');
     expect(res2.statusCode).toBe(200);
   });
 
+  test('Authenticated request, markdown type, fragment data found, return html', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/markdown')
+      .send('# Hello-World');
+
+    const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.html`)
+      .auth('user1@email.com', 'password1');
+    expect(res2.statusCode).toBe(200);
+  });
+
+  test('Authenticated request, markdown type, fragment data found, return txt', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/markdown')
+      .send('# Hello-World');
+
+    const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.txt`)
+      .auth('user1@email.com', 'password1');
+    expect(res2.statusCode).toBe(200);
+  });
+
+  test('Authenticated request, markdown type, fragment data found, not supported type', async () => {
+    const res = await request(app)
+      .post('/v1/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-type', 'text/markdown')
+      .send('# Hello-World');
+
+    const res2 = await request(app)
+      .get(`/v1/fragments/${res.body.fragment.id}.png`)
+      .auth('user1@email.com', 'password1');
+    expect(res2.statusCode).toBe(415);
+  });
+
+  //JSON
   test('Authenticated request, supported file, fragment data found, return json', async () => {
     const data = {
       hello: 'Hi',
@@ -82,6 +144,7 @@ describe('GET /v1/fragments/:Id', () => {
     expect(res2.statusCode).toBe(200);
   });
 
+  //IMAGE
   test('Authenticated request, supported file, fragment data found, return image', async () => {
     const filePath = '../integration/amazon.png';
 
