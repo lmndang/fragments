@@ -55,7 +55,9 @@ class Fragment {
       type !== 'text/html' &&
       type !== 'application/json' &&
       type !== 'image/png' &&
-      type !== 'image/jpeg'
+      type !== 'image/jpeg' &&
+      type !== 'image/webp' &&
+      type !== 'image/gif'
     ) {
       throw new Error('Invalid content-type');
     }
@@ -189,7 +191,9 @@ class Fragment {
       value === 'text/html' ||
       value === 'application/json' ||
       value === 'image/png' ||
-      value === 'image/jpeg'
+      value === 'image/jpeg' ||
+      value === 'image/webp' ||
+      value === 'image/gif'
     ) {
       return true;
     } else {

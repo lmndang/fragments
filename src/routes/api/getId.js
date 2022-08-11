@@ -124,7 +124,12 @@ module.exports = async (req, res) => {
       // };
 
       //Return image link
-      if (fragment.type === 'image/png' || fragment.type === 'image/jpeg') {
+      if (
+        fragment.type === 'image/png' ||
+        fragment.type === 'image/jpeg' ||
+        fragment.type === 'image/webp' ||
+        fragment.type === 'image/gif'
+      ) {
         res.send(`data:${fragment.type};base64,${data}`);
         return;
       }
