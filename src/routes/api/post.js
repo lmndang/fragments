@@ -9,7 +9,8 @@ module.exports = async (req, res) => {
     !req.is('text/markdown') &&
     !req.is('text/html') &&
     !req.is('application/json') &&
-    !req.is('image/png')
+    !req.is('image/png') &&
+    !req.is('image/jpeg')
   ) {
     res.status(415).json(createErrorResponse(415, 'Content type not supported'));
     return;

@@ -118,8 +118,13 @@ module.exports = async (req, res) => {
       }
 
       //IMAGE
-      if (fragment.type === 'image/png') {
-        //const b64 = text.toString();
+      //Convert image buffer to image Base64
+      // const toBase64 = (arrBuffer) => {
+      //   return btoa(arrBuffer.reduce((data, byte) => data + String.fromCharCode(byte), ''));
+      // };
+
+      //Return image link
+      if (fragment.type === 'image/png' || fragment.type === 'image/jpeg') {
         res.send(`data:${fragment.type};base64,${data}`);
         return;
       }
